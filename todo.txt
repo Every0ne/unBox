@@ -1,0 +1,4 @@
+1. Templates and builders for youtube, vimeo, fb, g.maps, iframes, inlines.
+2. Possibility to run random url/element off the bat.
+3. Resolve method responsibility problem (should .open create box?).
+4. Code optimization.

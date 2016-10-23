@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+
+		<title>unBox - jQuery or Zepto tiny small simple responsive lightbox</title>
+
+		<meta name="Description" content="unBox - jQuery/Zepto lightbox that is small, simple, responsive, mobile friendly, that delegates." />
+		<meta name="Keywords" content="jquery, Zepto, javascript, lightbox, responsive, small, tiny, mobile" />
+		
+		<link rel="stylesheet" media="all" type="text/css" href="css/css.css" />
+		<link rel="stylesheet" media="all" type="text/css" href="unbox.css" />
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="header">
+				<h1>unBox - jQuery or Zepto tiny small simple responsive lightbox</h1>
+			</div>
+
+			<div class="content">
+
+				<h2 id="Examples">Examples</h2>
+				
+				<!-- ============= example -->
+				<div class="example-container">
+					<h3>Single Initialization</h3>
+					<p>Create a single lightbox, individually on each image:</p>
+					<div>
+						<div id="gallery1" class="gallery">
+							<a href="media/sample_a.jpg" title="Caption for image A"><img src="media/sample_a_thumb.jpg" /></a>
+							<a href="media/sample_b.jpg" title="Caption for image B"><img src="media/sample_b_thumb.jpg" /></a>
+							<a href="media/sample_c.jpg" title="Caption for image C"><img src="media/sample_c_thumb.jpg" /></a>
+							<a href="media/sample_d.jpg" title="Caption for image D"><img src="media/sample_d_thumb.jpg" /></a>
+						</div>
+					</div>
+<pre class="ex code" data-lllanguage="js">
+$('#gallery1 a').unbox();
+</pre>
+				</div>
+
+				<!-- ============= example -->
+				<div class="example-container">
+					<h3>Gallery Initialization</h3>
+					<p>Create a gallery style lightbox:</p>
+					<div>
+						<div id="gallery2" class="gallery">
+							<a href="media/sample_a.jpg" title="Caption for image A"><img src="media/sample_a_thumb.jpg" /></a>
+							<a href="media/sample_b.jpg" title="Caption for image B"><img src="media/sample_b_thumb.jpg" /></a>
+							<a href="media/sample_c.jpg" title="Caption for image C"><img src="media/sample_c_thumb.jpg" /></a>
+							<a href="media/sample_d.jpg" title="Caption for image D"><img src="media/sample_d_thumb.jpg" /></a>
+						</div>
+					</div>
+<pre class="ex code" data-lllanguage="js">
+$('#gallery2').unbox({ selector: 'a' });
+</pre >
+				</div>
+
+			</div>
+		</div>
+
+		<!--<script type="text/javascript" src="lib/jquery.js"></script>-->
+		<script type="text/javascript" src="lib/zepto.min.js"></script>
+		<script type="text/javascript" src="lib/jquery-litelighter.js"></script>
+		<script type="text/javascript" src="unbox.js"></script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function(){
+				// quick routine for scrolling nav
+				var $nav = $('.header ul'),
+					navoffset = $nav.offset(),
+					$window = $(window);
+
+				// highlight the code
+				$('pre.code').litelighter();
+
+				// run the examples
+				$('.example-container > pre.ex').each(function(i){
+					eval($(this).data('llcode'));
+				});
+			});
+		</script>
+
+	</body>
+</html>

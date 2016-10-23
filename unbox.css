@@ -1,0 +1,123 @@
+.unbox, .unbox > *, .unbox > * > * {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.unbox {
+	position: fixed;
+	bottom: 0%;
+	right: 0%;
+	left: 0%;
+	top: 0%;
+	z-index: 999;
+	background-color: rgba(0,0,0,.66);
+	opacity: 0;
+	transition: opacity 250ms ease-out;
+}
+.unbox.on {
+	opacity: 1;
+}
+
+.unbox-loader-ctr,
+.unbox-content-ctr {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	white-space: nowrap;
+	text-align: center;
+	outline: none;
+	padding: 20px;
+	opacity: 0;
+	transform: scale(.9);
+	transition: opacity 250ms ease-out, transform 250ms ease-out;
+}
+.unbox-loader-ctr.on,
+.unbox-content-ctr.on {
+	opacity: 1;
+	transform: scale(1);
+}
+.unbox-loader-ctr:before,
+.unbox-content-ctr:before {
+	content: '';
+	display: inline-block;
+	vertical-align: middle;
+	height: 100%;
+	width: 0;
+	margin-right: -0.25em;
+}
+
+.unbox-loader,
+.unbox-content {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.unbox-content {
+	border-radius: 4px;
+	box-shadow: 0 0 6px rgba(0,0,0,.6);
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.unbox-loader {
+	display: inline-block;
+	vertical-align: middle;
+	animation: ripple 2s infinite;
+	animation-timing-function: ease-out;
+	border-radius: 100%;
+	width: 48px;
+	height: 48px;
+	border: 5px solid #fff;
+}
+
+.unbox-next,
+.unbox-prev {
+	transition: 150ms linear all;
+	position: absolute;
+	top: 50%;
+	margin-top: -10px;
+	border-width: calc(.25vw + .25vh + .125vmin) calc(.25vw + .25vh + .125vmin) 0 0;
+	border-style: solid;
+	border-color: #fff;
+	width: calc(.75vw + .75vh + .375vmin);
+	height: calc(.75vw + .75vh + .375vmin);
+	cursor: pointer;
+	opacity: 0;
+	filter: drop-shadow(0 0 5px rgba(0,0,0,.1));
+}
+.unbox-next {
+	right: 25px; z-index: 10;
+	transform: rotate(45deg) scale(0);
+}
+.unbox-prev {
+	left: 25px; z-index: 10;
+	transform: rotate(-135deg) scale(0);
+}
+.unbox-next.on {
+	opacity: .5;
+	transform: rotate(45deg) scale(1);
+}
+.unbox-prev.on {
+	opacity: .5;
+	transform: rotate(-135deg) scale(1);
+}
+.unbox-next:hover,
+.unbox-next:active,
+.unbox-prev:hover,
+.unbox-prev:active {
+	opacity: 1;
+	filter: drop-shadow(0 0 5px rgba(0,0,0,.5));
+}
+
+@keyframes ripple {
+	0% {
+		transform: scale(0);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 0;
+	}
+}
