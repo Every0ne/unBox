@@ -9,7 +9,11 @@
 		<meta name="Keywords" content="javascript, lightbox, responsive, small, tiny, mobile" />
 		
 		<link rel="stylesheet" media="all" type="text/css" href="css/css.css" />
+		<link rel="stylesheet" media="all" type="text/css" href="css/prism.css" />
 		<link rel="stylesheet" media="all" type="text/css" href="unbox.css" />
+
+		<script type="text/javascript" src="unbox.js"></script>
+		<script type="text/javascript" src="js/prism.js"></script>
 	</head>
 
 	<body>
@@ -34,9 +38,7 @@
 							<a href="media/sample_d.jpg" title="Caption for image D"><img src="media/sample_d_thumb.jpg" /></a>
 						</div>
 					</div>
-<pre class="ex code" data-lllanguage="js">
-unbox('#gallery1 a');
-</pre>
+					<pre><code class="language-js">unbox('#gallery1 a');</code></pre>
 				</div>
 
 				<!-- ============= example -->
@@ -51,34 +53,18 @@ unbox('#gallery1 a');
 							<a href="https://unsplash.it/800/1800" title="Caption for image D"><img src="media/sample_d_thumb.jpg" /></a>
 						</div>
 					</div>
-<pre class="ex code" data-lllanguage="js">
-unbox('#gallery2 a', {group : true});
-</pre >
+					<pre><code class="language-js">unbox('#gallery2 a', {group : true});</code></pre>
 				</div>
 
 			</div>
 		</div>
 
-		<!--<script type="text/javascript" src="lib/jquery.js"></script>-->
-		<script type="text/javascript" src="lib/zepto.min.js"></script>
-		<script type="text/javascript" src="lib/jquery-litelighter.js"></script>
-		<script type="text/javascript" src="unbox.js"></script>
-
 		<script type="text/javascript">
+			if( !NodeList.prototype.forEach )
+				NodeList.prototype.forEach = Array.prototype.foreach;
 
-			$(document).ready(function(){
-				// quick routine for scrolling nav
-				var $nav = $('.header ul'),
-					navoffset = $nav.offset(),
-					$window = $(window);
-
-				// highlight the code
-				$('pre.code').litelighter();
-
-				// run the examples
-				$('.example-container > pre.ex').each(function(i){
-					eval($(this).data('llcode'));
-				});
+			document.querySelectorAll('code').forEach( function( elt ){
+				eval( elt.innerHTML );
 			});
 		</script>
 
