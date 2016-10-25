@@ -95,13 +95,15 @@ var unbox = function(selector, options)
 unbox.prototype.create = function()
 {
 	var d = document;
+
+	d.on = d.addEventListener;
 	d.body.appendChild( this.box );
-	d.addEventListener('swipeleft',  this.evt.swipeLeft );
-	d.addEventListener('swiperight', this.evt.swipeRight );
-	d.addEventListener('keydown',    this.evt.keyDown );
+	d.on('swipeleft',  this.evt.swipeLeft );
+	d.on('swiperight', this.evt.swipeRight );
+	d.on('keydown',    this.evt.keyDown );
 
 	this.reflow( this.box );
-	this.box.classList.add('on');
+	this.flip( 'on', this.box );
 	return this;
 };
 
@@ -115,22 +117,22 @@ unbox.prototype.open = function( elt )
 	this.currentIdx = Number( elt.dataset.unboxIndex );
 	this.handleNavigation();
 
-	var src = elt.href || elt.dataset.unboxSrc;
-	var alt = elt.alt || elt.dataset.unboxTitle;
-	var me = this;
+	var src = elt.href || elt.dataset.unboxSrc,
+		alt = elt.alt || elt.dataset.unboxTitle,
+		me = this;
 
 	if(src)
 	{
 		var srcType = this.getSrcType( src );
 		var inner = this.parseHTML( this.tpl[ srcType ]( src, alt ) );
 
-		this.loader.classList.add( 'on' );
+		this.flip( 'on', me.loader );
 
 		inner.addEventListener( 'load', function onLoad( e ){
 			inner.removeEventListener( 'load', onLoad );
 			me.reflow( me.content );
-			me.loader.classList.remove( 'on' );
-			me.content.classList.add('on');
+			me.flip( 'off', me.loader );
+			me.flip( 'on', me.content );
 		});
 
 		this.content = this.parseHTML( this.tpl.content );
@@ -160,11 +162,9 @@ unbox.prototype.close = function()
 	var c = this.content;
 	this.content = null;
 
-	c.classList.remove('on');
-
 	setTimeout( function(){
 		c.remove();
-	}, this.getTransitionDuration( c ) );
+	}, this.flip( 'off', c ) );
 
 	return this;
 };
@@ -173,16 +173,16 @@ unbox.prototype.close = function()
 
 unbox.prototype.destroy = function()
 {
-	var me = this;
+	var me = this, d = document;
+	d.off = d.removeEventListener;
 
-	document.removeEventListener('swipeleft',  this.evt.swipeLeft );
-	document.removeEventListener('swiperight', this.evt.swipeRight );
-	document.removeEventListener('keydown',    this.evt.keyDown );
-	this.box.classList.remove('on');
+	d.off('swipeleft',  this.evt.swipeLeft );
+	d.off('swiperight', this.evt.swipeRight );
+	d.off('keydown',    this.evt.keyDown );
 
 	setTimeout( function(){
 		me.box.remove();
-	}, this.getTransitionDuration( this.box ) );
+	}, this.flip( 'off', this.box ) );
 }
 
 
@@ -192,17 +192,19 @@ unbox.prototype.handleNavigation = function()
 	if( !this.options.group || this.elts.length < 2)
 		return;
 
-	var l = this.elts.length - 1;
-	var n = this.currentIdx;
+	var l = this.elts.length - 1,
+		n = this.currentIdx,
+		nxt = this.nextBtn.classList,
+		prv = this.prevBtn.classList;
 
 	if( n == 0 )
-		this.prevBtn.classList.remove('on');
+		prv.remove('on');
 	if( n == l )
-		this.nextBtn.classList.remove('on');
+		nxt.remove('on');
 	if( n > 0 )
-		this.prevBtn.classList.add('on');
+		prv.add('on');
 	if( n < l )
-		this.nextBtn.classList.add('on');
+		nxt.add('on');
 	if( n < 0 || n > l)
 		return;
 }
@@ -232,6 +234,20 @@ unbox.prototype.parseHTML = function( str )
 
 	return div.childElementCount == 1 ? div.children.item(0) : div.children;
 };
+
+
+
+unbox.prototype.flip = function( state, elt )
+{
+	var c = elt.classList;
+
+	if( state == 'on')
+		c.add('on');
+	else
+		c.remove('on');
+
+	return this.getTransitionDuration( elt );
+}
 
 
 
