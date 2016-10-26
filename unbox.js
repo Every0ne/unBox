@@ -5,11 +5,9 @@ var unbox = function(selector, options)
 	if( !( this instanceof unbox ) )
 		return new unbox(selector, options);
 
-	this.options = {
+	this.options = Object.assign({
 		group: false,
-	};
-
-	Object.assign(this.options, options);
+	}, options);
 
 	this.elts = document.querySelectorAll( selector );
 	this.currentIdx = null;
@@ -18,7 +16,7 @@ var unbox = function(selector, options)
 	this.nextBtn = this.box.querySelector('.unbox-next');
 	this.prevBtn = this.box.querySelector('.unbox-prev');
 	this.content = null;
-	
+
 	this.tpl = {
 		content: '<div class="unbox-content-ctr"></div>',
 		image: function(src, alt){ return '<img src="'+src+'" alt="'+alt+'" class="unbox-content">'; },
@@ -277,11 +275,6 @@ unbox.prototype.reflow = function( elt ){
 	return elt.offsetHeight || document.body.offsetHeight;
 };
 
-
-unbox.prototype.killChildren = function( elt ){
-	while( elt.lastChild )
-		elt.lastChild.remove();
-};
 
 
 unbox.prototype.parseURLArgs = function( url ){
