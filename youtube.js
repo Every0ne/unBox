@@ -1,4 +1,4 @@
-// /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+// /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/i;
 // /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/
 // /(youtube(-nocookie)?\.com|youtu\.be)\/(watch\?v=|v\/|u\/|embed\/?)?([\w-]{11})(.*)?/i
 // /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/
@@ -8,6 +8,7 @@ var urls = [
 	'http://www.youtube.com/user/Scobleizer#p/u/1/1p3vcRhsYGo',
 	'http://www.youtube.com/watch?v=cKZDdG9FTKY&feature=channel',
 	'http://www.youtube.com/watch?v=yZ-K7nCVnBI&playnext_from=TL&videos=osPknwzXEas&feature=sub',
+	'http://www.youtube.com/watch?playnext_from=TL&v=yZ-K7nCVnBI&feature=sub&videos=osPknwzXEas',
 	'http://www.youtube.com/ytscreeningroom?v=NRHVzbJVx8I',
 	'http://www.youtube.com/user/SilkRoadTheatre#p/a/u/2/6dwqZw0j_jY',
 	'http://youtu.be/6dwqZw0j_jY',
@@ -15,7 +16,6 @@ var urls = [
 	'http://youtu.be/xYhJQs9IZcg',
 	'http://www.youtube.com/user/Scobleizer#p/u/1/1p3vcRhsYGo?rel=0',
 	'http://www.youtube.com/watch?v=cKZDdG9FTKY&feature=channel',
-	'http://www.youtube.com/watch?v=yZ-K7nCVnBI&playnext_from=TL&videos=osPknwzXEas&feature=sub',
 	'http://www.youtube.com/ytscreeningroom?v=NRHVzbJVx8I',
 	'http://www.youtube.com/embed/nas1rJpm7wY?rel=0',
 	'http://www.youtube.com/watch?v=peFZbP64dsU',
@@ -38,14 +38,13 @@ var realURLs = [
 
 
 var i, r;
-var rx = /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+var junnes = /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/i;
+var ians = /(?:youtube(?:-nocookie)?\.com|youtu\.be)\/(?:watch\?v=|v\/|u\/|embed\/?)?([\w-]{11})/i;
 
 
-function test(){
+function test(whos){
 	for( i = 0; i < urls.length; i++ ){
-		r = urls[i].match( rx );
+		r = urls[i].match( whos );
 		console.log( r );
 	}
 }
-
-test();

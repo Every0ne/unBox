@@ -19,12 +19,13 @@ var unbox = function(selector, options)
 
 	this.tpl = {
 		content: '<div class="unbox-content-ctr"></div>',
-		image: function(src, alt){ return '<img src="'+src+'" alt="'+alt+'" class="unbox-content">'; },
+		image: function(srcData, alt){ return '<img src="'+srcData[1]+'" alt="'+alt+'" class="unbox-content">'; },
+		youtube: function(srcData){ return '<iframe src="'+srcData[2]+'" frameborder="0" allowfullscreen></iframe>'; },
 	};
 
 	this.regex = {
-		image      : /(^data:image\/)|(\.(png|jpe?g|gif|svg|webp|bmp|ico|tiff?)(\?\S*)?$)/i,
-		//youtube    : /(youtube(-nocookie)?\.com|youtu\.be)\/(watch\?v=|v\/|u\/|embed\/?)?([\w-]{11})(.*)?/i, //TODO
+		image      : /(^data:image\/)|(.+\.(png|jpe?g|gif|svg|webp|bmp|ico|tiff?))/i,
+		youtube    : /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/i,
 
 /*youtube links
 		https://youtu.be/lBafpMW8pEI?t=5m7s
@@ -121,8 +122,9 @@ unbox.prototype.open = function( elt )
 
 	if(src)
 	{
-		var srcType = this.getSrcType( src );
-		var inner = this.parseHTML( this.tpl[ srcType ]( src, alt ) );
+		var srcData = this.getSrcData( src );
+		console.log(srcData);
+		var inner = this.parseHTML( this.tpl[ srcData[0] ]( srcData, alt ) );
 
 		this.flip( 'on', me.loader );
 
@@ -143,14 +145,21 @@ unbox.prototype.open = function( elt )
 
 
 
-unbox.prototype.getSrcType = function( src )
+unbox.prototype.getSrcData = function( src )
 {
-	for( var srcType in this.regex ){
-		if( this.regex[srcType].test( src ) )
-			return srcType;
-	};
+	var srcData;
 
-	return 'image';
+	for( var srcType in this.regex )
+	{
+		srcData = src.match( this.regex[ srcType ] );
+		if( srcData !== null )
+		{
+			srcData.unshift( srcType );
+			return srcData;
+		}
+	}
+
+	return ['image', src ];
 };
 
 
