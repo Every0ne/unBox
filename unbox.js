@@ -20,7 +20,7 @@ var unbox = function(selector, options)
 	this.tpl = {
 		content: '<div class="unbox-content-ctr"></div>',
 		image: function(srcData, alt){ return '<img src="'+srcData[1]+'" alt="'+alt+'" class="unbox-content">'; },
-		youtube: function(srcData){ return '<iframe src="'+srcData[2]+'" frameborder="0" allowfullscreen></iframe>'; },
+		youtube: function(srcData){ return '<iframe src="https://www.youtube.com/embed/'+srcData[2]+'?autoplay=1" frameborder="0" allowfullscreen></iframe>'; },
 	};
 
 	this.regex = {

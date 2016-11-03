@@ -7,7 +7,7 @@
 
 		<meta name="Description" content="unBox - a lightbox that is small, simple, responsive, mobile friendly." />
 		<meta name="Keywords" content="javascript, lightbox, responsive, small, tiny, mobile" />
-		
+
 		<link rel="stylesheet" media="all" type="text/css" href="css/css.css" />
 		<link rel="stylesheet" media="all" type="text/css" href="css/prism.css" />
 		<link rel="stylesheet" media="all" type="text/css" href="unbox.css" />
@@ -25,7 +25,7 @@
 			<div class="content">
 
 				<h2 id="Examples">Examples</h2>
-				
+
 				<!-- ============= example -->
 				<div class="example-container">
 					<h3>Single Initialization</h3>
@@ -54,6 +54,21 @@
 						</div>
 					</div>
 					<pre><code class="language-js">unbox('#gallery2 a', {group : true});</code></pre>
+				</div>
+
+				<!-- ============= example -->
+				<div class="example-container">
+					<h3>VideoLightbox Initialization</h3>
+					<p>Create a lightbox for videos:</p>
+					<div>
+						<div id="gallery3" class="gallery">
+							<a href="https://www.youtube.com/watch?v=n_dZNLr2cME" title="Caption for image A"><img src="media/sample_a_thumb.jpg" /></a>
+							<a href="https://unsplash.it/1000/900" title="Caption for image B"><img src="media/sample_b_thumb.jpg" /></a>
+							<a href="https://unsplash.it/1260/700" title="Caption for image C"><img src="media/sample_c_thumb.jpg" /></a>
+							<a href="https://unsplash.it/800/1800" title="Caption for image D"><img src="media/sample_d_thumb.jpg" /></a>
+						</div>
+					</div>
+					<pre><code class="language-js">unbox('#gallery3 a');</code></pre>
 				</div>
 
 			</div>
