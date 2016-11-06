@@ -39,7 +39,7 @@ Element.prototype.addClass = function( str )
 };
 
 
-div.addClass('on').then( function(elt){console.log(elt)} );
+div.addClass('on').then( function(elt){ console.log( elt, elt.getTransitionDuration() ) } );
 
 
 

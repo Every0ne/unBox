@@ -47,9 +47,6 @@
 	width: 0;
 	margin-right: -0.25em;
 }
-.unbox-content-ctr > * {
-	vertical-align: middle;
-}
 
 .unbox-loader,
 .unbox-content {
@@ -114,13 +111,17 @@
 	filter: drop-shadow(0 0 5px rgba(0,0,0,.5));
 }
 
-.unbox-video-wrp {
+.unbox-video-outer {
+	width: 800px;
+}
+
+.unbox-video-inner {
 	position: relative;
 	padding-bottom: 56.25%;
 	padding-top: 25px;
 	height: 0;
 }
-.unbox-video iframe {
+.unbox-video-inner iframe {
 	position: absolute;
 	height: 100%;
 	width: 100%;
