@@ -28,12 +28,12 @@ var unbox = function(selector, options)
 
 	this.coreTpl = {
 		image   : function( srcData, alt ){ return '<img src="'+srcData[1]+'" alt="'+alt+'" class="unbox-content">' },
-		youtube : function( srcData ){ return '<iframe src="https://www.youtube-nocookie.com/embed/'+srcData[2]+'?autoplay=1&rel=0" frameborder="0" allowfullscreen></iframe>' },
+		youtube : function( srcData ){ return '<iframe src="https://www.youtube'+srcData[2]+'.com/embed/'+srcData[3]+srcData[4]+'" frameborder="0" allowfullscreen></iframe>' },
 	};
 
 	this.regex = {
 		image      : /(^data:image\/)|(.+\.(png|jpe?g|gif|svg|webp|bmp|ico|tiff?))/i,
-		youtube    : /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:youtu\.be\/|youtube(-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/i,
+		youtube    : /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:youtu\.be\/|youtube(-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})(.*)?/i,
 
 		//vimeo      : /(vimeo(pro)?.com)\/(?:[^\d]+)?(\d+)\??(.*)?$/,  //TODO
 		//googlemaps : /((maps|www)\.)?google\.([^\/\?]+)\/?((maps\/?)?\?)(.*)/i, //TODO
@@ -166,6 +166,10 @@ unbox.prototype.getSrcData = function( src )
 		srcData = src.match( this.regex[ srcType ] );
 		if( srcData !== null )
 		{
+			srcData = srcData.map( function( match ){
+				return match || '';
+			});
+
 			srcData.unshift( srcType );
 			return srcData;
 		}
