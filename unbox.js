@@ -19,26 +19,37 @@ var unbox = function(selector, options)
 
 	this.wrpTpl = {
 		content : '<div class="unbox-content-ctr"></div>',
-		video   : [
+		youtube : [
 			'<div class="unbox-content unbox-video-outer"></div>',
 			'<div class="unbox-video-inner"></div>',
 		],
 	}
-	this.wrpTpl.youtube = this.wrpTpl.video;
 
 	this.coreTpl = {
 		image   : function( srcData, alt ){ return '<img src="'+srcData[1]+'" alt="'+alt+'" class="unbox-content">' },
 		youtube : function( srcData ){ return '<iframe src="https://www.youtube'+srcData[2]+'.com/embed/'+srcData[3]+srcData[4]+'" frameborder="0" allowfullscreen></iframe>' },
+		video   : function( srcData ){ return '<video controls autoplay class="unbox-content"><source src="'+srcData[1]+'" type="video/'+srcData[4]+'">Your browser does not support the video tag.</video>' },
+		flash   : function( srcData ){ return '<embed src="'+srcData[0]+'" width="'+srcData[1]+'" height="'+srcData[2]+'" scale="exactfit" wmode="direct">'}.
+		url     : function( srcData ){ return '<iframe src="'+srcData[1]+'" frameborder="0" class="unbox-content"></iframe>' },
 	};
 
 	this.regex = {
 		image      : /(^data:image\/)|(.+\.(png|jpe?g|gif|svg|webp|bmp|ico|tiff?))/i,
 		youtube    : /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:youtu\.be\/|youtube(-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})(.*)?/i,
-
+		video      : /(.+\.(mp4|webm|ogg))/i,
+		flash      : /.+\.(?:swf).*width=(\d+).*height=(\d+).*/i,
 		//vimeo      : /(vimeo(pro)?.com)\/(?:[^\d]+)?(\d+)\??(.*)?$/,  //TODO
 		//googlemaps : /((maps|www)\.)?google\.([^\/\?]+)\/?((maps\/?)?\?)(.*)/i, //TODO
 		//fbvideo    : /(facebook\.com)\/([a-z0-9_-]*)\/videos\/([0-9]*)(.*)?$/i  //TODO
 	};
+	
+	this.loadEvt = {
+		image   : 'load',
+		youtube : 'load',
+		video   : 'canplay',
+		flash   : 'load',
+		url     : 'load',
+	}
 
 
 
@@ -129,14 +140,15 @@ unbox.prototype.open = function( elt )
 
 	var
 		srcData = this.getSrcData( src ),
-		srcType = srcData[0];
+		srcType = srcData[0],
+		loadEvt = this.loadEvt[srcType];
 
 	var core = this.parseHTML( this.coreTpl[ srcType ]( srcData, alt ) );
 
 	this.flip( 'on', me.loader );
 
-	core.addEventListener( 'load', function onLoad( e ){
-		core.removeEventListener( 'load', onLoad );
+	core.addEventListener( loadEvt, function onLoad( e ){
+		core.removeEventListener( loadEvt, onLoad );
 		me.reflow( me.content );
 		me.flip( 'off', me.loader );
 		me.flip( 'on', me.content );
@@ -164,6 +176,7 @@ unbox.prototype.getSrcData = function( src )
 	for( var srcType in this.regex )
 	{
 		srcData = src.match( this.regex[ srcType ] );
+
 		if( srcData !== null )
 		{
 			srcData = srcData.map( function( match ){
@@ -175,7 +188,7 @@ unbox.prototype.getSrcData = function( src )
 		}
 	}
 
-	return ['image', src ];
+	return ['url', src ];
 }
 
 
