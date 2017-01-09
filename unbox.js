@@ -28,8 +28,8 @@ var unbox = function(selector, options)
 	this.coreTpl = {
 		image   : function( srcData, alt ){ return '<img src="'+srcData[1]+'" alt="'+alt+'" class="unbox-content">' },
 		youtube : function( srcData ){ return '<iframe src="https://www.youtube'+srcData[2]+'.com/embed/'+srcData[3]+srcData[4]+'" frameborder="0" allowfullscreen></iframe>' },
-		video   : function( srcData ){ return '<video controls autoplay class="unbox-content"><source src="'+srcData[1]+'" type="video/'+srcData[4]+'">Your browser does not support the video tag.</video>' },
-		flash   : function( srcData ){ return '<embed src="'+srcData[0]+'" width="'+srcData[1]+'" height="'+srcData[2]+'" scale="exactfit" wmode="direct">'}.
+		video   : function( srcData ){ return '<video controls autoplay class="unbox-content"><source src="'+srcData[1]+'" type="video/'+srcData[3]+'">Your browser does not support the video tag.</video>' },
+		flash   : function( srcData ){ return '<embed src="'+srcData[1]+'" width="'+srcData[2]+'" height="'+srcData[3]+'" scale="noborder" wmode="direct" class="unbox-content">'},
 		url     : function( srcData ){ return '<iframe src="'+srcData[1]+'" frameborder="0" class="unbox-content"></iframe>' },
 	};
 
@@ -47,10 +47,9 @@ var unbox = function(selector, options)
 		image   : 'load',
 		youtube : 'load',
 		video   : 'canplay',
-		flash   : 'load',
+		flash   : false,
 		url     : 'load',
 	}
-
 
 
 	if(!NodeList.prototype.forEach)
@@ -145,24 +144,31 @@ unbox.prototype.open = function( elt )
 
 	var core = this.parseHTML( this.coreTpl[ srcType ]( srcData, alt ) );
 
-	this.flip( 'on', me.loader );
+	if( loadEvt )
+	{
+		this.flip( 'on', me.loader );
 
-	core.addEventListener( loadEvt, function onLoad( e ){
-		core.removeEventListener( loadEvt, onLoad );
-		me.reflow( me.content );
-		me.flip( 'off', me.loader );
-		me.flip( 'on', me.content );
-	});
+		core.addEventListener( loadEvt, function onLoad( e ){
+			core.removeEventListener( loadEvt, onLoad );
+			me.reflow( me.content );
+			me.flip( 'off', me.loader );
+			me.flip( 'on', me.content );
+		});
+	}
 
 	if( this.wrpTpl[ srcType ] )
 		for( var i = this.wrpTpl[ srcType ].length; i--; )
 			core = this.wrapHTML( core, this.wrpTpl[ srcType ][ i ] )
 
 	console.log( core );
+	console.log( srcData );
 
 	this.content = this.parseHTML( this.wrpTpl.content );
 	this.content.appendChild( core );
 	this.box.appendChild( this.content );
+
+	if( !loadEvt )
+		this.flip( 'on', me.content );
 
 	return;
 }
